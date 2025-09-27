@@ -1,0 +1,756 @@
+:root {
+    --santander-red: #EC0000;
+    --background-gray: #f4f4f4;
+    --text-dark: #333;
+    --text-light: #666;
+    --border-color: #e0e0e0;
+    --white: #fff;
+    --font-family: 'Lato', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    font-family: var(--font-family);
+    background-color: var(--background-gray);
+    color: var(--text-dark);
+}
+
+#app-container {
+    max-width: 420px;
+    height: 100%;
+    margin: 0 auto;
+    background-color: var(--white);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+}
+
+.screen.active {
+    opacity: 1;
+    visibility: visible;
+    z-index: 10;
+}
+
+.hidden {
+    display: none;
+}
+
+button {
+    font-family: var(--font-family);
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: inherit;
+}
+
+/* Material Symbols Outlined icons */
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24;
+  vertical-align: middle;
+}
+
+/* --- Login Screen --- */
+#login-screen {
+    background: url('https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?q=80&w=2070&auto=format&fit=crop') no-repeat center center;
+    background-size: cover;
+    color: var(--white);
+    justify-content: space-between;
+}
+
+#login-screen::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(1, 2, 23, 0.6);
+    z-index: 1; /* Pushed behind content */
+}
+
+.login-header, .login-content, .login-footer {
+    z-index: 2; /* Ensure content is above overlay */
+}
+
+.login-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+}
+
+.login-header .logo {
+    width: 120px;
+}
+
+.login-header .menu-btn {
+    border: 1px solid var(--white);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+.login-content {
+    text-align: center;
+    padding: 0 1rem;
+}
+
+.login-content h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.login-content .change-user {
+    margin-top: 0.5rem;
+    color: #ccc;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.dni-container {
+    margin: 2rem auto;
+}
+
+#dni-input {
+    background: none;
+    border: none;
+    color: var(--white);
+    text-align: center;
+    font-size: 1rem;
+    width: 100%;
+    pointer-events: none;
+}
+
+.password-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 1.5rem 0;
+}
+
+#password-display {
+    letter-spacing: 0.5rem;
+    font-size: 2rem;
+    height: 30px;
+}
+
+#password-text {
+    font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+#toggle-password {
+    color: #ccc;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+#toggle-password .material-symbols-outlined {
+    font-size: 1.5rem;
+}
+
+#numpad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.num-btn {
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--text-dark);
+    border-radius: 12px;
+    font-size: 1.8rem;
+    font-weight: 400;
+    padding: 1.2rem 0;
+    border: 1px solid #ddd;
+}
+.num-btn:last-of-type, .num-btn:nth-child(10) {
+    background-color: #e0e0e0;
+}
+
+
+.login-footer {
+    display: flex;
+    justify-content: space-around;
+    padding: 1.5rem;
+    color: #ddd;
+}
+.login-footer button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+}
+.login-footer .material-symbols-outlined {
+    font-size: 2rem;
+}
+.error-message {
+    color: #ffcdd2;
+    margin-top: 1rem;
+    height: 1.2rem;
+}
+
+
+/* --- Main App Screens --- */
+.app-header {
+    background-color: var(--santander-red);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    gap: 1rem;
+    flex-shrink: 0;
+}
+.app-header .logo-white {
+    height: 25px;
+    width: auto;
+    margin-right: auto;
+}
+.app-header .header-icons {
+    display: flex;
+    gap: 0.5rem;
+}
+.app-header .header-icons button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.7rem;
+}
+.app-header .back-btn {
+    margin-right: auto;
+}
+.app-header .header-title {
+    font-weight: bold;
+    margin-right: auto;
+}
+
+.content-area {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    background-color: var(--background-gray);
+}
+.bizum-content {
+    background-color: var(--white);
+}
+
+.welcome-banner {
+    background-color: var(--white);
+    padding: 1.5rem 1rem;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+.welcome-banner h2 {
+    font-size: 1.5rem;
+}
+.welcome-banner p {
+    color: var(--text-light);
+}
+.welcome-banner h3 {
+    font-size: 2rem;
+    margin-top: 0.5rem;
+}
+.hide-balance-btn {
+    color: var(--text-light);
+}
+
+.quick-actions {
+    display: flex;
+    justify-content: space-around;
+    background-color: var(--white);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+.quick-actions button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--text-dark);
+}
+.quick-actions .icon-wrapper {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #fce8e6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--santander-red);
+}
+.quick-actions .bizum-icon {
+    font-weight: bold;
+    font-size: 1.5rem;
+    font-style: italic;
+    color: var(--santander-red);
+}
+
+.product-card {
+    background-color: var(--white);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+    border-top: 4px solid var(--border-color);
+}
+.product-card.account { border-color: var(--santander-red); }
+.product-card.credit { border-color: #424242; }
+.product-card.loan { border-color: #f57c00; }
+.product-card.insurance { border-color: #1e88e5; }
+.product-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+.product-card-header h4 {
+    font-size: 1.1rem;
+}
+.product-card-body p {
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+.product-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 1rem;
+}
+.product-card-footer p {
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+.product-card-footer .balance {
+    font-size: 1.7rem;
+    font-weight: 700;
+}
+
+.bottom-nav {
+    display: flex;
+    justify-content: space-around;
+    padding: 0.5rem 0;
+    border-top: 1px solid var(--border-color);
+    background-color: var(--white);
+    flex-shrink: 0;
+}
+.bottom-nav button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.75rem;
+    color: var(--text-light);
+}
+.bottom-nav button.active {
+    color: var(--santander-red);
+}
+
+/* --- Account Details --- */
+.account-details-header {
+    background: var(--white);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+.account-iban { color: var(--text-light); font-size: 0.9rem; }
+.account-balance-label { margin-top: 1rem; }
+.account-balance-value { font-size: 2.2rem; color: var(--santander-red); }
+.quick-actions.compact {
+    padding: 1rem 0.5rem;
+}
+.quick-actions.compact button { font-size: 0.7rem; }
+.quick-actions.compact .bizum-icon.small { font-size: 1rem; }
+.transactions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    margin-top: 1rem;
+}
+.transaction-group h5 {
+    padding: 0.5rem 0;
+    color: var(--text-light);
+    font-weight: bold;
+}
+.transaction-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    background: var(--white);
+    border-bottom: 1px solid var(--border-color);
+}
+.transaction-item:last-child { border: none; }
+.transaction-details p { font-size: 0.9rem; }
+.transaction-details .desc { font-weight: bold; margin-bottom: 0.25rem; }
+.transaction-details .meta { color: var(--text-light); font-size: 0.8rem; }
+.transaction-amount .amount { font-size: 1.1rem; font-weight: bold; text-align: right; }
+.transaction-amount .running-balance { color: var(--text-light); font-size: 0.8rem; text-align: right; }
+
+/* --- Bizum Screen --- */
+.bizum-main-actions {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+.bizum-action-card {
+    flex: 1;
+    background-color: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+}
+.bizum-action-card.contact {
+    background-color: #fce8e6;
+    border-color: #f9bdbb;
+}
+.bizum-icon.large {
+    font-size: 2.5rem;
+    font-weight: 900;
+    margin-bottom: 0.5rem;
+    color: var(--santander-red);
+    font-style: italic;
+}
+.contact-initials {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: var(--santander-red);
+    color: var(--white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0 auto 0.5rem;
+}
+.bizum-recents {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+.bizum-recents a {
+    color: var(--santander-red);
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+.recent-transactions {
+    display: flex;
+    gap: 1rem;
+}
+.recent-card {
+    flex: 1;
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+.recent-card p {
+    font-size: 0.8rem;
+    color: var(--text-light);
+}
+.recent-card h5 {
+    margin: 0.5rem 0;
+}
+.recent-card .amount {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+}
+.status.accepted {
+    background-color: #e8f5e9;
+    color: #4caf50;
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+}
+
+/* --- Menu Screen --- */
+#menu-screen header {
+    background-color: var(--white);
+    color: var(--text-dark);
+    border-bottom: 1px solid var(--border-color);
+}
+.menu-content {
+    background-color: var(--background-gray);
+    flex-grow: 1;
+}
+.user-profile {
+    background-color: var(--white);
+    padding: 1.5rem;
+    text-align: center;
+    position: relative;
+    border-bottom: 1px solid var(--border-color);
+}
+.user-initials {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: #008472;
+    color: var(--white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0 auto 1rem;
+    border: 3px solid var(--white);
+    outline: 2px solid #008472;
+}
+.user-profile h3 {
+    font-size: 1.2rem;
+}
+.user-profile p {
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+.logout-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    color: var(--text-light);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.8rem;
+}
+.menu-search {
+    background: var(--white);
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+.menu-search input {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 1rem;
+}
+.menu-nav {
+    margin-top: 1rem;
+    background: var(--white);
+}
+.menu-nav a {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.2rem 1rem;
+    text-decoration: none;
+    color: var(--text-dark);
+    border-bottom: 1px solid var(--border-color);
+}
+.menu-nav a.active {
+    font-weight: bold;
+    border-left: 4px solid var(--santander-red);
+    background-color: #fcf4f4;
+}
+
+/* --- Gemini Chat Screen --- */
+#chat-container {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 0; /* Let chat history handle its own padding */
+}
+
+#chat-history {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+.chat-message {
+    padding: 0.75rem 1rem;
+    border-radius: 18px;
+    max-width: 80%;
+    line-height: 1.4;
+}
+.chat-message.user {
+    background-color: var(--santander-red);
+    color: var(--white);
+    border-bottom-right-radius: 4px;
+    align-self: flex-end;
+}
+.chat-message.model {
+    background-color: var(--background-gray);
+    color: var(--text-dark);
+    border-bottom-left-radius: 4px;
+    align-self: flex-start;
+}
+.chat-message.loading {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.loading-dots {
+    display: flex;
+}
+.loading-dots span {
+    width: 8px;
+    height: 8px;
+    margin: 0 2px;
+    background-color: #999;
+    border-radius: 50%;
+    animation: bounce 1.4s infinite ease-in-out both;
+}
+.loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+.loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+@keyframes bounce {
+    0%, 80%, 100% { transform: scale(0); }
+    40% { transform: scale(1.0); }
+}
+
+
+#chat-input-container {
+    padding: 1rem;
+    background: var(--white);
+    border-top: 1px solid var(--border-color);
+    flex-shrink: 0;
+}
+#gemini-confirm-btn {
+    width: 100%;
+    padding: 0.8rem;
+    background-color: #28a745;
+    color: var(--white);
+    font-weight: bold;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+#chat-form {
+    display: flex;
+    gap: 0.5rem;
+}
+#chat-input {
+    flex-grow: 1;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+}
+#chat-send-btn {
+    background-color: var(--santander-red);
+    color: var(--white);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* --- Filter Modal --- */
+#filter-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+}
+#filter-modal {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-width: 420px;
+    margin: 0 auto;
+    background-color: var(--white);
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    z-index: 101;
+    padding: 1rem;
+    transform: translateY(100%);
+    transition: transform 0.3s ease-in-out;
+}
+#filter-modal.active {
+    transform: translateY(0);
+}
+
+.filter-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+.filter-modal-header h4 {
+    font-size: 1.2rem;
+}
+.filter-modal-content h5 {
+    color: var(--text-light);
+    margin-bottom: 1rem;
+}
+#filter-month-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.month-option {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+.month-option input {
+    margin-right: 0.75rem;
+}
+.month-option.selected {
+    border-color: var(--santander-red);
+    background-color: #fef5f5;
+}
+.filter-modal-footer {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+#clear-filter-btn {
+    flex: 1;
+    padding: 0.8rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+#apply-filter-btn {
+    flex: 1;
+    padding: 0.8rem;
+    background-color: var(--santander-red);
+    color: var(--white);
+    border-radius: 8px;
+    font-weight: bold;
+}

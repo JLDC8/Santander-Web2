@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Santander Replica</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+<script type="importmap">
+{
+  "imports": {
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.21.0"
+  }
+}
+</script>
+</head>
+<body>
+    <div id="app-container">
+        <!-- Login Screen -->
+        <section id="login-screen" class="screen active">
+            <div class="login-header">
+                <img src="./logo.png" alt="Santander Logo" class="logo">
+                <button class="menu-btn">Menú</button>
+            </div>
+            <div class="login-content">
+                <h1>Hola, Jose Luis</h1>
+                <p id="change-user-btn" class="change-user">Cambiar usuario</p>
+                <div class="dni-container">
+                    <input type="text" id="dni-input" value="01927244" readonly>
+                </div>
+                <div class="password-container">
+                    <div id="password-display"></div>
+                    <button id="toggle-password">
+                        <span class="material-symbols-outlined">visibility</span>
+                        <span id="password-text" class="hidden"></span>
+                    </button>
+                </div>
+                <div id="numpad">
+                    <button class="num-btn" data-key="1">1</button>
+                    <button class="num-btn" data-key="2">2</button>
+                    <button class="num-btn" data-key="3">3</button>
+                    <button class="num-btn" data-key="4">4</button>
+                    <button class="num-btn" data-key="5">5</button>
+                    <button class="num-btn" data-key="6">6</button>
+                    <button class="num-btn" data-key="7">7</button>
+                    <button class="num-btn" data-key="8">8</button>
+                    <button class="num-btn" data-key="9">9</button>
+                    <button class="num-btn" data-key="backspace">
+                        <span class="material-symbols-outlined">backspace</span>
+                    </button>
+                    <button class="num-btn" data-key="0">0</button>
+                    <button class="num-btn" id="login-ok-btn" data-key="ok">OK</button>
+                </div>
+                 <p id="login-error" class="error-message hidden">Clave incorrecta. Inténtalo de nuevo.</p>
+            </div>
+            <div class="login-footer">
+                <button><span class="material-symbols-outlined">fingerprint</span> Sensor huella</button>
+                <button><span class="material-symbols-outlined">refresh</span> Recuperar clave</button>
+                <button><span class="material-symbols-outlined">lock</span> Santander Key</button>
+            </div>
+        </section>
+
+        <!-- Home Screen -->
+        <main id="home-screen" class="screen hidden">
+            <header class="app-header">
+                 <img src="https://www.santander.com/content/dam/santander-com/es/assets/marca/logo-santander-blanco.svg" alt="Santander Logo" class="logo-white">
+                <div class="header-icons">
+                    <button><span class="material-symbols-outlined">mail</span>Buzón</button>
+                    <button><span class="material-symbols-outlined">sync_alt</span>Gestion</button>
+                    <button><span class="material-symbols-outlined">search</span>Buscar</button>
+                    <button id="home-menu-btn"><span class="material-symbols-outlined">menu</span>Menú</button>
+                </div>
+            </header>
+            <div class="content-area">
+                <div class="welcome-banner">
+                    <div>
+                        <h2>Hola, Jose Luis</h2>
+                        <p>Tu dinero</p>
+                        <h3 id="total-balance">14.243,16€</h3>
+                    </div>
+                    <button class="hide-balance-btn">
+                        <span class="material-symbols-outlined">visibility_off</span> Ocultar
+                    </button>
+                </div>
+                <div class="quick-actions">
+                    <button id="bizum-btn">
+                        <div class="icon-wrapper bizum-icon">%</div>
+                        Bizum
+                    </button>
+                    <button>
+                        <div class="icon-wrapper"><span class="material-symbols-outlined">send</span></div>
+                        Enviar dinero
+                    </button>
+                    <button>
+                        <div class="icon-wrapper"><span class="material-symbols-outlined">swap_horiz</span></div>
+                        Traspaso
+                    </button>
+                    <button>
+                        <div class="icon-wrapper"><span class="material-symbols-outlined">more_horiz</span></div>
+                        Más opciones
+                    </button>
+                </div>
+                <div id="product-list">
+                    <!-- Products will be injected here by JS -->
+                </div>
+            </div>
+            <nav class="bottom-nav">
+                <button class="active"><span class="material-symbols-outlined">home</span>Inicio</button>
+                <button><span class="material-symbols-outlined">euro</span>Financiación</button>
+                <button><span class="material-symbols-outlined">trending_up</span>Inversión</button>
+                <button><span class="material-symbols-outlined">shield</span>Seguros</button>
+                <button><span class="material-symbols-outlined">query_stats</span>Análisis</button>
+            </nav>
+        </main>
+
+        <!-- Account Details Screen -->
+        <section id="account-details-screen" class="screen hidden">
+            <header class="app-header">
+                <button class="back-btn" data-target="home-screen"><span class="material-symbols-outlined">arrow_back</span></button>
+                <span id="account-detail-title" class="header-title">CTA EMPLEADOS SAN</span>
+                <div class="header-icons">
+                     <button><span class="material-symbols-outlined">help</span></button>
+                     <button><span class="material-symbols-outlined">menu</span></button>
+                </div>
+            </header>
+            <div class="content-area">
+                <div class="account-details-header">
+                     <p id="account-detail-iban" class="account-iban">ES41 0049 4780 1921 1612 4721</p>
+                     <p class="account-balance-label">Saldo disponible</p>
+                     <h3 id="account-detail-balance" class="account-balance-value">12.718,16€</h3>
+                </div>
+                <div class="quick-actions compact">
+                    <button><span class="material-symbols-outlined">send</span>Enviar dinero</button>
+                    <button><div class="bizum-icon small">%</div>Bizum</button>
+                    <button><span class="material-symbols-outlined">receipt_long</span>Recibos</button>
+                    <button><span class="material-symbols-outlined">request_quote</span>Financiar</button>
+                    <button><span class="material-symbols-outlined">more_horiz</span>Más</button>
+                </div>
+                <div class="transactions-header">
+                    <h4>Movimientos</h4>
+                    <div class="transaction-actions">
+                        <button id="filter-btn"><span class="material-symbols-outlined">filter_list</span>Filtros</button>
+                    </div>
+                </div>
+                <div id="transaction-list">
+                    <!-- Transactions will be injected here by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Bizum Screen -->
+        <section id="bizum-screen" class="screen hidden">
+            <header class="app-header">
+                 <button class="back-btn" data-target="home-screen"><span class="material-symbols-outlined">arrow_back</span>Atrás</button>
+                 <span class="header-title">Bizum</span>
+                <div class="header-icons">
+                    <button><span class="material-symbols-outlined">search</span>Buscar</button>
+                    <button><span class="material-symbols-outlined">menu</span>Menú</button>
+                </div>
+            </header>
+             <div class="content-area bizum-content">
+                <div class="bizum-main-actions">
+                    <div class="bizum-action-card">
+                        <div class="bizum-icon large">%</div>
+                        <h4>Nuevo envío</h4>
+                        <p>Envía dinero a un teléfono móvil</p>
+                    </div>
+                    <div class="bizum-action-card contact">
+                        <div class="contact-initials">JO</div>
+                        <h4>Jorge Olmedo V.</h4>
+                        <p>643 545 912</p>
+                    </div>
+                </div>
+
+                <div class="bizum-recents">
+                    <h4>Bizum recientes</h4>
+                    <a href="#">Ver histórico</a>
+                </div>
+                <div class="recent-transactions">
+                    <div class="recent-card">
+                        <p>26 SEPT</p>
+                        <h5>Jorge Olmedo V.</h5>
+                        <p class="amount">-200,00€</p>
+                        <span class="status accepted">Aceptada</span>
+                    </div>
+                     <div class="recent-card">
+                        <p>25 SEPT</p>
+                        <h5>Jorge Olmedo V.</h5>
+                        <p class="amount">-200,00€</p>
+                        <span class="status accepted">Aceptada</span>
+                    </div>
+                     <div class="recent-card">
+                        <p>24 SEPT</p>
+                        <h5>Jorge Olmedo V.</h5>
+                        <p class="amount">-200,00€</p>
+                        <span class="status accepted">Aceptada</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Menu Screen -->
+        <section id="menu-screen" class="screen hidden">
+             <header class="app-header">
+                <button class="back-btn" data-target="home-screen"><span class="material-symbols-outlined">arrow_back</span>Atrás</button>
+                 <span class="header-title">Menú</span>
+            </header>
+            <div class="menu-content">
+                <div class="user-profile">
+                    <div class="user-initials">JL</div>
+                    <h3>Jose Luis Castillo</h3>
+                    <p>Área personal</p>
+                    <button class="logout-btn"><span class="material-symbols-outlined">power_settings_new</span> Salir</button>
+                </div>
+                <div class="menu-search">
+                    <span class="material-symbols-outlined">search</span>
+                    <input type="text" placeholder="Buscar">
+                </div>
+                <nav class="menu-nav">
+                    <a href="#"><span class="material-symbols-outlined">home</span> Inicio</a>
+                    <a href="#" class="active"><span class="material-symbols-outlined">account_balance_wallet</span> Mis productos</a>
+                    <a href="#"><span class="material-symbols-outlined">add_circle</span> Contratar</a>
+                    <a href="#"><span class="material-symbols-outlined">apple</span> Productos Apple</a>
+                </nav>
+            </div>
+        </section>
+        
+        <!-- Gemini Chat Screen -->
+        <section id="gemini-screen" class="screen hidden">
+            <header class="app-header">
+                <button class="back-btn" data-target="login-screen"><span class="material-symbols-outlined">arrow_back</span></button>
+                <span class="header-title">Asistente de Datos</span>
+            </header>
+            <div id="chat-container" class="content-area">
+                <div id="chat-history">
+                     <!-- Chat messages will be injected here -->
+                </div>
+            </div>
+            <div id="chat-input-container">
+                 <button id="gemini-confirm-btn" class="hidden">Confirmar y volver</button>
+                 <form id="chat-form">
+                    <input type="text" id="chat-input" placeholder="Ej: Saldo de 5000€ con gastos de supermercado y bizum..." autocomplete="off">
+                    <button type="submit" id="chat-send-btn">
+                        <span class="material-symbols-outlined">send</span>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Filter Modal -->
+        <div id="filter-modal-backdrop" class="hidden"></div>
+        <div id="filter-modal" class="hidden">
+            <div class="filter-modal-header">
+                <h4>Filtrar movimientos</h4>
+                <button id="close-filter-btn"><span class="material-symbols-outlined">close</span></button>
+            </div>
+            <div class="filter-modal-content">
+                <h5>Filtrar por mes</h5>
+                <div id="filter-month-options">
+                    <!-- Month options will be injected here -->
+                </div>
+            </div>
+             <div class="filter-modal-footer">
+                <button id="clear-filter-btn">Limpiar</button>
+                <button id="apply-filter-btn">Aplicar</button>
+            </div>
+        </div>
+
+    </div>
+    <script type="module" src="index.tsx"></script>
+</body>
+</html>
