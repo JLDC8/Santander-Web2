@@ -9,6 +9,17 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+    <!-- PWA Manifest & Theme -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#EC0000"/>
+    
+    <!-- iOS PWA Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Santander">
+    <link rel="apple-touch-icon" href="/logo.png">
+
 <script type="importmap">
 {
   "imports": {
@@ -22,7 +33,7 @@
         <!-- Login Screen -->
         <section id="login-screen" class="screen active">
             <div class="login-header">
-                <img src="./logo.png" alt="Santander Logo" class="logo">
+                <img src="/logo.png" alt="Santander Logo" class="logo">
                 <button class="menu-btn">Menú</button>
             </div>
             <div class="login-content">
@@ -158,7 +169,7 @@
                  <span class="header-title">Bizum</span>
                 <div class="header-icons">
                     <button><span class="material-symbols-outlined">search</span>Buscar</button>
-                    <button><span class="material-symbols-outlined">menu</span>Menú</button>
+                    <button id="bizum-menu-btn"><span class="material-symbols-outlined">menu</span>Menú</button>
                 </div>
             </header>
              <div class="content-area bizum-content">
@@ -168,10 +179,8 @@
                         <h4>Nuevo envío</h4>
                         <p>Envía dinero a un teléfono móvil</p>
                     </div>
-                    <div class="bizum-action-card contact">
-                        <div class="contact-initials">JO</div>
-                        <h4>Jorge Olmedo V.</h4>
-                        <p>643 545 912</p>
+                    <div id="bizum-main-contact-card" class="bizum-action-card contact">
+                        <!-- Main contact will be injected here by JS -->
                     </div>
                 </div>
 
@@ -179,25 +188,8 @@
                     <h4>Bizum recientes</h4>
                     <a href="#">Ver histórico</a>
                 </div>
-                <div class="recent-transactions">
-                    <div class="recent-card">
-                        <p>26 SEPT</p>
-                        <h5>Jorge Olmedo V.</h5>
-                        <p class="amount">-200,00€</p>
-                        <span class="status accepted">Aceptada</span>
-                    </div>
-                     <div class="recent-card">
-                        <p>25 SEPT</p>
-                        <h5>Jorge Olmedo V.</h5>
-                        <p class="amount">-200,00€</p>
-                        <span class="status accepted">Aceptada</span>
-                    </div>
-                     <div class="recent-card">
-                        <p>24 SEPT</p>
-                        <h5>Jorge Olmedo V.</h5>
-                        <p class="amount">-200,00€</p>
-                        <span class="status accepted">Aceptada</span>
-                    </div>
+                <div id="bizum-recent-transactions-container" class="recent-transactions-scroller">
+                    <!-- Recent transactions will be injected here by JS -->
                 </div>
             </div>
         </section>

@@ -24,11 +24,21 @@ let MOCK_DATA = {
         { date: "Jueves, 25 sept", desc: "Pago Movil En Bazar Y Souveni", meta: "Madrid, Tarj.: *397399", amount: -3.00, balance: 13272.18 },
         { date: "", desc: "Bizum, A Favor De Jorge Olmedo", meta: "Concepto: Sin Concepto", amount: -200.00, balance: 13286.18 },
         { date: "Miercoles, 24 ago", desc: "Supermercado Mercadona", meta: "Madrid, Tarj.: *397399", amount: -85.50, balance: 13486.18 },
-    ]
+    ],
+    bizum: {
+        mainContact: { name: "Jorge Olmedo V.", phone: "643 545 912", initials: "JO" },
+        recents: [
+            { date: "26 SEPT", name: "Jorge Olmedo V.", amount: -200.00, status: "Aceptada" },
+            { date: "25 SEPT", name: "Jorge Olmedo V.", amount: -200.00, status: "Aceptada" },
+            { date: "24 SEPT", name: "Alquiler Piso", amount: -850.00, status: "Aceptada" },
+            { date: "23 SEPT", name: "Ana García", amount: 25.50, status: "Recibido" }
+        ]
+    }
 };
 
 let currentData = JSON.parse(JSON.stringify(MOCK_DATA));
 let tempNewData = null;
+let tempNewBizumData = null;
 
 // --- State ---
 let currentPassword = "";
@@ -36,6 +46,8 @@ let passwordVisible = false;
 let activeScreen = 'login-screen';
 let activeFilterMonth: string | null = null;
 let selectedFilterMonth: string | null = null;
+let geminiContext: 'global' | 'bizum' = 'global';
+let previousScreenForGemini = 'login-screen';
 
 
 // --- Gemini AI ---
@@ -73,6 +85,37 @@ const dataSchema = {
         },
     },
     required: ['products', 'transactions'],
+};
+
+const bizumSchema = {
+    type: Type.OBJECT,
+    properties: {
+        mainContact: {
+            type: Type.OBJECT,
+            description: "The most frequent or important contact for the main card display.",
+            properties: {
+                name: { type: Type.STRING },
+                phone: { type: Type.STRING },
+                initials: { type: Type.STRING, description: "Two-letter initials for the contact's name." }
+            },
+             required: ['name', 'phone', 'initials']
+        },
+        recents: {
+            type: Type.ARRAY,
+            description: "List of 3 to 5 recent Bizum transactions.",
+            items: {
+                type: Type.OBJECT,
+                properties: {
+                    date: { type: Type.STRING, description: "Short date format, e.g., '26 SEPT'." },
+                    name: { type: Type.STRING },
+                    amount: { type: Type.NUMBER, description: "Transaction amount. Negative for sent money, positive for received." },
+                    status: { type: Type.STRING, description: "Status can be 'Aceptada', 'Pendiente', 'Rechazada', or 'Recibido'." }
+                },
+                required: ['date', 'name', 'amount', 'status']
+            }
+        }
+    },
+    required: ['mainContact', 'recents']
 };
 
 
@@ -185,6 +228,7 @@ function renderAllData() {
     renderProducts();
     renderTransactions();
     updateAccountDetailsHeader();
+    renderBizumData();
 
     const totalBalance = currentData.products
         .filter(p => p.type === 'account')
@@ -275,6 +319,7 @@ function renderTransactions() {
 
     const filteredTransactions = activeFilterMonth 
         ? currentData.transactions.filter(t => {
+              if (!t.date) return false;
               const monthAbbr = t.date.split(' ').pop();
               const monthIndex = monthNames.indexOf(monthAbbr);
               const transactionDate = new Date();
@@ -296,13 +341,40 @@ function renderTransactions() {
                     <p class="meta">${t.meta}</p>
                 </div>
                 <div class="transaction-amount">
-                    <p class="amount">${t.amount.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}</p>
+                    <p class="amount ${t.amount > 0 ? 'positive' : ''}">${t.amount.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}</p>
                     <p class="running-balance">${t.balance.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}</p>
                 </div>
             </div>`;
     });
     transactionListContainer.innerHTML = html || `<p style="padding: 1rem; text-align: center;">No hay movimientos para el mes seleccionado.</p>`;
 }
+
+function renderBizumData() {
+    const mainContactCard = document.getElementById('bizum-main-contact-card');
+    const recentsContainer = document.getElementById('bizum-recent-transactions-container');
+    
+    if (!mainContactCard || !recentsContainer || !currentData.bizum) return;
+    
+    const { mainContact, recents } = currentData.bizum;
+
+    // Update main contact
+    mainContactCard.innerHTML = `
+        <div class="contact-initials">${mainContact.initials}</div>
+        <h4>${mainContact.name}</h4>
+        <p>${mainContact.phone}</p>
+    `;
+
+    // Update recents
+    recentsContainer.innerHTML = recents.map(t => `
+        <div class="recent-card">
+            <p>${t.date}</p>
+            <h5>${t.name}</h5>
+            <p class="amount ${t.amount > 0 ? 'positive' : ''}">${t.amount.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}</p>
+            <span class="status ${t.status.toLowerCase()}">${t.status}</span>
+        </div>
+    `).join('');
+}
+
 
 function toggleFilterModal(show: boolean) {
     if (show) {
@@ -378,14 +450,29 @@ async function handleGeminiPrompt(prompt: string) {
     addChatMessage('loading', '');
     geminiConfirmBtn.classList.add('hidden');
     tempNewData = null;
+    tempNewBizumData = null;
+
+    let promptToGemini = '';
+    let schemaToUse = null;
+    let successMessage = '';
+
+    if (geminiContext === 'bizum') {
+        promptToGemini = `Basado en esta petición del usuario: "${prompt}", genera un nuevo conjunto de datos de Bizum simulados. Incluye un contacto principal y entre 3 y 5 transacciones recientes. Los importes deben ser coherentes y variados.`;
+        schemaToUse = bizumSchema;
+        successMessage = 'He generado los nuevos datos de Bizum. ¿Confirmas para verlos?';
+    } else { // global
+        promptToGemini = `Basado en esta petición del usuario: "${prompt}", genera un nuevo conjunto de datos financieros simulados. Asegúrate de que los saldos y las transacciones son coherentes. El saldo final de la cuenta principal debe ser el resultado de aplicar todas las transacciones. El saldo corriente de cada transacción debe ser correcto.`;
+        schemaToUse = dataSchema;
+        successMessage = '¡Perfecto! He generado los nuevos datos. ¿Quieres confirmar y volver al inicio?';
+    }
 
     try {
         const response = await ai.models.generateContent({
             model: "gemini-2.5-flash",
-            contents: `Basado en esta petición del usuario: "${prompt}", genera un nuevo conjunto de datos financieros simulados. Asegúrate de que los saldos y las transacciones son coherentes. El saldo final de la cuenta principal debe ser el resultado de aplicar todas las transacciones. El saldo corriente de cada transacción debe ser correcto.`,
+            contents: promptToGemini,
             config: {
                 responseMimeType: "application/json",
-                responseSchema: dataSchema,
+                responseSchema: schemaToUse,
             },
         });
         
@@ -395,10 +482,14 @@ async function handleGeminiPrompt(prompt: string) {
         const jsonStr = response.text.trim();
         const newData = JSON.parse(jsonStr);
 
-        // Basic validation
-        if (newData.products && newData.transactions) {
+        // Basic validation and store temp data
+        if (geminiContext === 'bizum' && newData.mainContact && newData.recents) {
+            tempNewBizumData = newData;
+            addChatMessage('model', successMessage);
+            geminiConfirmBtn.classList.remove('hidden');
+        } else if (geminiContext === 'global' && newData.products && newData.transactions) {
             tempNewData = newData;
-            addChatMessage('model', '¡Perfecto! He generado los nuevos datos. ¿Quieres confirmar y volver al inicio?');
+            addChatMessage('model', successMessage);
             geminiConfirmBtn.classList.remove('hidden');
         } else {
             throw new Error("Invalid data structure received.");
@@ -414,6 +505,21 @@ async function handleGeminiPrompt(prompt: string) {
 
 // --- Event Listeners ---
 document.addEventListener('DOMContentLoaded', () => {
+    // PWA Service Worker Registration
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+                .then(registration => {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                })
+                .catch(err => {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+        });
+    }
+
+    renderBizumData(); // Render initial bizum data
+
     numpad.addEventListener('click', (e) => {
         const target = e.target as HTMLElement;
         const key = (target.closest('.num-btn') as HTMLElement)?.dataset.key;
@@ -443,8 +549,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Gemini Chat listeners
     changeUserBtn.addEventListener('click', () => {
+        geminiContext = 'global';
+        previousScreenForGemini = 'login-screen';
         chatHistoryContainer.innerHTML = '';
         addChatMessage('model', 'Hola, soy tu asistente de datos. ¿Qué tipo de saldo y movimientos te gustaría ver?');
+        showScreen('gemini-screen');
+    });
+
+    document.getElementById('bizum-menu-btn').addEventListener('click', () => {
+        geminiContext = 'bizum';
+        previousScreenForGemini = 'bizum-screen';
+        chatHistoryContainer.innerHTML = '';
+        addChatMessage('model', 'Hola, soy tu asistente Bizum. ¿Qué tipo de movimientos Bizum te gustaría simular?');
         showScreen('gemini-screen');
     });
 
@@ -458,7 +574,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     geminiConfirmBtn.addEventListener('click', () => {
-        if(tempNewData) {
+        if (geminiContext === 'bizum' && tempNewBizumData) {
+            currentData.bizum = tempNewBizumData;
+            renderBizumData();
+            showScreen('bizum-screen');
+            tempNewBizumData = null; // Clear temp data
+        } else if (geminiContext === 'global' && tempNewData) {
             currentData.products = tempNewData.products;
             currentData.transactions = tempNewData.transactions;
             
@@ -469,6 +590,7 @@ document.addEventListener('DOMContentLoaded', () => {
             loginError.classList.add('hidden');
             
             showScreen('login-screen');
+            tempNewData = null; // Clear temp data
         }
     });
 
@@ -479,8 +601,13 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const backBtn = target.closest('.back-btn');
         if (backBtn) {
-            const targetScreen = backBtn.getAttribute('data-target');
-            if (targetScreen) showScreen(targetScreen);
+            // Special handling for Gemini screen back button
+            if (backBtn.closest('#gemini-screen')) {
+                showScreen(previousScreenForGemini);
+            } else {
+                const targetScreen = backBtn.getAttribute('data-target');
+                if (targetScreen) showScreen(targetScreen);
+            }
             return;
         }
 

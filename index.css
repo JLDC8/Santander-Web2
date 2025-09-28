@@ -230,131 +230,34 @@ button {
     flex-shrink: 0;
 }
 .app-header .logo-white {
-    height: 25px;
-    width: auto;
-    margin-right: auto;
+    width: 120px;
 }
-.app-header .header-icons {
+
+.header-icons {
+    margin-left: auto;
     display: flex;
     gap: 0.5rem;
 }
-.app-header .header-icons button {
+.header-icons button {
     display: flex;
     flex-direction: column;
     align-items: center;
     font-size: 0.7rem;
-}
-.app-header .back-btn {
-    margin-right: auto;
+    gap: 2px;
 }
 .app-header .header-title {
+    font-size: 1.1rem;
     font-weight: bold;
-    margin-right: auto;
+}
+.app-header .back-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
 }
 
 .content-area {
     flex-grow: 1;
     overflow-y: auto;
-    padding: 1rem;
-    background-color: var(--background-gray);
-}
-.bizum-content {
-    background-color: var(--white);
-}
-
-.welcome-banner {
-    background-color: var(--white);
-    padding: 1.5rem 1rem;
-    border-radius: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 1rem;
-}
-.welcome-banner h2 {
-    font-size: 1.5rem;
-}
-.welcome-banner p {
-    color: var(--text-light);
-}
-.welcome-banner h3 {
-    font-size: 2rem;
-    margin-top: 0.5rem;
-}
-.hide-balance-btn {
-    color: var(--text-light);
-}
-
-.quick-actions {
-    display: flex;
-    justify-content: space-around;
-    background-color: var(--white);
-    padding: 1rem;
-    border-radius: 8px;
-    margin-bottom: 1rem;
-}
-.quick-actions button {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.8rem;
-    color: var(--text-dark);
-}
-.quick-actions .icon-wrapper {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background-color: #fce8e6;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: var(--santander-red);
-}
-.quick-actions .bizum-icon {
-    font-weight: bold;
-    font-size: 1.5rem;
-    font-style: italic;
-    color: var(--santander-red);
-}
-
-.product-card {
-    background-color: var(--white);
-    padding: 1rem;
-    border-radius: 8px;
-    margin-bottom: 0.75rem;
-    border-top: 4px solid var(--border-color);
-}
-.product-card.account { border-color: var(--santander-red); }
-.product-card.credit { border-color: #424242; }
-.product-card.loan { border-color: #f57c00; }
-.product-card.insurance { border-color: #1e88e5; }
-.product-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.5rem;
-}
-.product-card-header h4 {
-    font-size: 1.1rem;
-}
-.product-card-body p {
-    color: var(--text-light);
-    font-size: 0.9rem;
-}
-.product-card-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-top: 1rem;
-}
-.product-card-footer p {
-    font-size: 0.9rem;
-    color: var(--text-light);
-}
-.product-card-footer .balance {
-    font-size: 1.7rem;
-    font-weight: 700;
 }
 
 .bottom-nav {
@@ -362,7 +265,6 @@ button {
     justify-content: space-around;
     padding: 0.5rem 0;
     border-top: 1px solid var(--border-color);
-    background-color: var(--white);
     flex-shrink: 0;
 }
 .bottom-nav button {
@@ -376,75 +278,254 @@ button {
     color: var(--santander-red);
 }
 
-/* --- Account Details --- */
-.account-details-header {
-    background: var(--white);
+.welcome-banner {
+    background-color: #f0f0f0;
+    padding: 1.5rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.welcome-banner h2 {
+    font-size: 1.2rem;
+    font-weight: normal;
+}
+.welcome-banner p {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-top: 0.25rem;
+}
+.welcome-banner h3 {
+    font-size: 2rem;
+    margin-top: 0.5rem;
+}
+.hide-balance-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--text-light);
+}
+
+.quick-actions {
+    display: flex;
+    justify-content: space-around;
     padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+.quick-actions button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    width: 80px;
+    text-align: center;
+}
+.icon-wrapper {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.bizum-icon {
+    font-weight: bold;
+    color: #43b4e7;
+}
+.icon-wrapper.bizum-icon {
+    background-color: #e3f2fd;
+    font-size: 1.5rem;
+}
+
+#product-list {
+    padding: 0 1rem 1rem;
+}
+.product-card {
+    border: 1px solid var(--border-color);
     border-radius: 8px;
-    margin-bottom: 1rem;
+    padding: 1rem;
+    margin-top: 1rem;
+    cursor: pointer;
 }
-.account-iban { color: var(--text-light); font-size: 0.9rem; }
-.account-balance-label { margin-top: 1rem; }
-.account-balance-value { font-size: 2.2rem; color: var(--santander-red); }
+.product-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+.product-card-header h4 {
+    font-size: 1rem;
+}
+.product-card-body p {
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+.product-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 1rem;
+}
+.product-card-footer p {
+    font-size: 0.8rem;
+    color: var(--text-light);
+}
+.product-card-footer .balance {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+.product-card-footer .balance-small {
+    font-size: 1rem;
+    font-weight: bold;
+}
+.product-card.loan .balance,
+.product-card.credit .balance {
+    color: var(--santander-red);
+}
+
+/* Account Details */
+.account-details-header {
+    padding: 1.5rem 1rem;
+    text-align: center;
+}
+.account-iban {
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+.account-balance-label {
+    margin-top: 1rem;
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+.account-balance-value {
+    font-size: 2rem;
+    margin-top: 0.25rem;
+}
 .quick-actions.compact {
-    padding: 1rem 0.5rem;
+    padding: 1rem;
+    border-top: 1px solid var(--border-color);
+    gap: 0.5rem;
 }
-.quick-actions.compact button { font-size: 0.7rem; }
-.quick-actions.compact .bizum-icon.small { font-size: 1rem; }
+.quick-actions.compact button {
+    gap: 0.25rem;
+    width: auto;
+    font-size: 0.75rem;
+}
+.quick-actions.compact .material-symbols-outlined {
+    font-size: 1.25rem;
+}
+.bizum-icon.small {
+    font-size: 1rem;
+    width: 20px;
+    height: 20px;
+    background-color: #e3f2fd;
+    border-radius: 50%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .transactions-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 0;
-    margin-top: 1rem;
+    padding: 1rem;
+    border-top: 8px solid var(--background-gray);
+    border-bottom: 1px solid var(--border-color);
+}
+.transactions-header h4 {
+    font-size: 1rem;
+}
+.transaction-actions button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.transaction-group {
+    padding: 0.75rem 1rem;
+    background-color: var(--background-gray);
+    border-bottom: 1px solid var(--border-color);
 }
 .transaction-group h5 {
-    padding: 0.5rem 0;
-    color: var(--text-light);
-    font-weight: bold;
+    font-size: 0.9rem;
 }
 .transaction-item {
     display: flex;
     justify-content: space-between;
     padding: 1rem;
-    background: var(--white);
     border-bottom: 1px solid var(--border-color);
 }
-.transaction-item:last-child { border: none; }
-.transaction-details p { font-size: 0.9rem; }
-.transaction-details .desc { font-weight: bold; margin-bottom: 0.25rem; }
-.transaction-details .meta { color: var(--text-light); font-size: 0.8rem; }
-.transaction-amount .amount { font-size: 1.1rem; font-weight: bold; text-align: right; }
-.transaction-amount .running-balance { color: var(--text-light); font-size: 0.8rem; text-align: right; }
+.transaction-details .desc {
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+.transaction-details .meta {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    margin-top: 0.25rem;
+}
+.transaction-amount {
+    text-align: right;
+    flex-shrink: 0;
+    margin-left: 1rem;
+}
+.transaction-amount .amount {
+    font-weight: bold;
+}
+.transaction-amount .amount.positive {
+    color: #2e7d32;
+}
+.transaction-amount .running-balance {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    margin-top: 0.25rem;
+}
 
-/* --- Bizum Screen --- */
+/* Bizum Screen */
+.bizum-content {
+    padding-top: 1rem;
+}
 .bizum-main-actions {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 1rem;
-    margin-bottom: 2rem;
+    padding: 0 1rem;
 }
 .bizum-action-card {
-    flex: 1;
-    background-color: var(--white);
-    border: 1px solid var(--border-color);
+    background-color: #f9f9f9;
     border-radius: 8px;
     padding: 1rem;
     text-align: center;
-}
-.bizum-action-card.contact {
-    background-color: #fce8e6;
-    border-color: #f9bdbb;
+    border: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 .bizum-icon.large {
-    font-size: 2.5rem;
-    font-weight: 900;
-    margin-bottom: 0.5rem;
-    color: var(--santander-red);
-    font-style: italic;
+    font-size: 2rem;
+    width: 56px;
+    height: 56px;
+    background-color: #e3f2fd;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 0.5rem;
 }
-.contact-initials {
-    width: 50px;
-    height: 50px;
+.bizum-action-card h4 {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+}
+.bizum-action-card p {
+    font-size: 0.8rem;
+    color: var(--text-light);
+}
+.bizum-action-card.contact .contact-initials {
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
     background-color: var(--santander-red);
     color: var(--white);
@@ -455,145 +536,106 @@ button {
     font-weight: bold;
     margin: 0 auto 0.5rem;
 }
+
 .bizum-recents {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
+    padding: 1.5rem 1rem 0.5rem;
+}
+.bizum-recents h4 {
+    font-size: 1rem;
 }
 .bizum-recents a {
     color: var(--santander-red);
-    font-weight: bold;
     text-decoration: none;
     font-size: 0.9rem;
-}
-.recent-transactions {
-    display: flex;
-    gap: 1rem;
-}
-.recent-card {
-    flex: 1;
-    padding: 1rem;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-}
-.recent-card p {
-    font-size: 0.8rem;
-    color: var(--text-light);
-}
-.recent-card h5 {
-    margin: 0.5rem 0;
-}
-.recent-card .amount {
-    font-size: 1.1rem;
     font-weight: bold;
-    color: var(--text-dark);
-    margin-bottom: 1rem;
-}
-.status.accepted {
-    background-color: #e8f5e9;
-    color: #4caf50;
-    padding: 0.25rem 0.5rem;
-    border-radius: 12px;
-    font-size: 0.8rem;
 }
 
-/* --- Menu Screen --- */
-#menu-screen header {
-    background-color: var(--white);
-    color: var(--text-dark);
-    border-bottom: 1px solid var(--border-color);
-}
+/* Menu Screen */
 .menu-content {
-    background-color: var(--background-gray);
-    flex-grow: 1;
+    padding: 1rem;
 }
 .user-profile {
-    background-color: var(--white);
-    padding: 1.5rem;
-    text-align: center;
-    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem 0;
     border-bottom: 1px solid var(--border-color);
 }
 .user-initials {
-    width: 70px;
-    height: 70px;
+    width: 64px;
+    height: 64px;
     border-radius: 50%;
-    background-color: #008472;
+    background-color: var(--santander-red);
     color: var(--white);
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 2rem;
     font-weight: bold;
-    margin: 0 auto 1rem;
-    border: 3px solid var(--white);
-    outline: 2px solid #008472;
 }
 .user-profile h3 {
-    font-size: 1.2rem;
+    margin-top: 1rem;
 }
 .user-profile p {
     color: var(--text-light);
     font-size: 0.9rem;
+    margin-top: 0.25rem;
 }
 .logout-btn {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    color: var(--text-light);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 0.8rem;
-}
-.menu-search {
-    background: var(--white);
-    padding: 0.5rem 1rem;
+    margin-top: 1rem;
+    color: var(--santander-red);
+    font-weight: bold;
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    border-bottom: 1px solid var(--border-color);
+}
+.menu-search {
+    position: relative;
+    margin: 1rem 0;
+}
+.menu-search .material-symbols-outlined {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-light);
 }
 .menu-search input {
-    border: none;
-    outline: none;
     width: 100%;
+    padding: 0.75rem 0.75rem 0.75rem 2.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
     font-size: 1rem;
-}
-.menu-nav {
-    margin-top: 1rem;
-    background: var(--white);
 }
 .menu-nav a {
     display: flex;
     align-items: center;
     gap: 1rem;
-    padding: 1.2rem 1rem;
+    padding: 1rem;
     text-decoration: none;
     color: var(--text-dark);
-    border-bottom: 1px solid var(--border-color);
+    border-radius: 8px;
 }
 .menu-nav a.active {
+    background-color: #f0f0f0;
     font-weight: bold;
-    border-left: 4px solid var(--santander-red);
-    background-color: #fcf4f4;
 }
 
-/* --- Gemini Chat Screen --- */
+/* Gemini Screen */
 #chat-container {
     display: flex;
     flex-direction: column;
-    padding-bottom: 0; /* Let chat history handle its own padding */
+    padding: 1rem;
 }
-
 #chat-history {
     flex-grow: 1;
     overflow-y: auto;
-    padding: 1rem;
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 1rem;
 }
 .chat-message {
     padding: 0.75rem 1rem;
@@ -604,27 +646,58 @@ button {
 .chat-message.user {
     background-color: var(--santander-red);
     color: var(--white);
-    border-bottom-right-radius: 4px;
     align-self: flex-end;
+    border-bottom-right-radius: 4px;
 }
 .chat-message.model {
-    background-color: var(--background-gray);
+    background-color: #e9e9eb;
     color: var(--text-dark);
-    border-bottom-left-radius: 4px;
     align-self: flex-start;
+    border-bottom-left-radius: 4px;
 }
-.chat-message.loading {
+#chat-input-container {
+    padding: 1rem;
+    border-top: 1px solid var(--border-color);
+    background-color: var(--white);
     display: flex;
-    align-items: center;
+    flex-direction: column;
     gap: 0.5rem;
+}
+#gemini-confirm-btn {
+    background-color: #2e7d32;
+    color: var(--white);
+    padding: 0.75rem;
+    border-radius: 20px;
+    font-weight: bold;
+}
+#chat-form {
+    display: flex;
+    gap: 0.5rem;
+}
+#chat-input {
+    flex-grow: 1;
+    padding: 0.75rem 1rem;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    font-size: 1rem;
+}
+#chat-send-btn {
+    background-color: var(--santander-red);
+    color: var(--white);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    flex-shrink: 0;
 }
 .loading-dots {
     display: flex;
+    gap: 4px;
+    align-items: center;
+    height: 1.4em; /* Match line-height */
 }
 .loading-dots span {
     width: 8px;
     height: 8px;
-    margin: 0 2px;
     background-color: #999;
     border-radius: 50%;
     animation: bounce 1.4s infinite ease-in-out both;
@@ -636,121 +709,142 @@ button {
     40% { transform: scale(1.0); }
 }
 
-
-#chat-input-container {
-    padding: 1rem;
-    background: var(--white);
-    border-top: 1px solid var(--border-color);
-    flex-shrink: 0;
-}
-#gemini-confirm-btn {
-    width: 100%;
-    padding: 0.8rem;
-    background-color: #28a745;
-    color: var(--white);
-    font-weight: bold;
-    border-radius: 8px;
-    margin-bottom: 1rem;
-}
-#chat-form {
-    display: flex;
-    gap: 0.5rem;
-}
-#chat-input {
-    flex-grow: 1;
-    border: 1px solid var(--border-color);
-    border-radius: 20px;
-    padding: 0.75rem 1rem;
-    font-size: 1rem;
-}
-#chat-send-btn {
-    background-color: var(--santander-red);
-    color: var(--white);
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* --- Filter Modal --- */
+/* Filter Modal */
 #filter-modal-backdrop {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0,0,0,0.5);
     z-index: 100;
 }
 #filter-modal {
-    position: fixed;
+    position: absolute;
     bottom: 0;
     left: 0;
-    right: 0;
-    max-width: 420px;
-    margin: 0 auto;
+    width: 100%;
     background-color: var(--white);
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
     z-index: 101;
-    padding: 1rem;
     transform: translateY(100%);
-    transition: transform 0.3s ease-in-out;
+    transition: transform 0.3s ease-out;
 }
 #filter-modal.active {
     transform: translateY(0);
 }
-
 .filter-modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
 }
 .filter-modal-header h4 {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+}
+.filter-modal-content {
+    padding: 1.5rem 1rem;
 }
 .filter-modal-content h5 {
-    color: var(--text-light);
     margin-bottom: 1rem;
 }
 #filter-month-options {
     display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+    gap: 1rem;
 }
 .month-option {
-    display: flex;
-    align-items: center;
-    padding: 0.8rem;
+    flex: 1;
+    padding: 1rem;
     border: 1px solid var(--border-color);
     border-radius: 8px;
-}
-.month-option input {
-    margin-right: 0.75rem;
+    text-align: center;
+    cursor: pointer;
 }
 .month-option.selected {
     border-color: var(--santander-red);
-    background-color: #fef5f5;
+    background-color: #fff5f5;
+    font-weight: bold;
+}
+.month-option input {
+    display: none;
 }
 .filter-modal-footer {
     display: flex;
+    padding: 1rem;
     gap: 1rem;
-    margin-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+}
+.filter-modal-footer button {
+    flex: 1;
+    padding: 0.75rem;
+    border-radius: 20px;
+    font-weight: bold;
 }
 #clear-filter-btn {
-    flex: 1;
-    padding: 0.8rem;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
+    border: 1px solid var(--santander-red);
+    color: var(--santander-red);
 }
 #apply-filter-btn {
-    flex: 1;
-    padding: 0.8rem;
     background-color: var(--santander-red);
     color: var(--white);
+}
+
+/* --- Bizum Screen Enhancements --- */
+.recent-transactions-scroller {
+    display: flex;
+    overflow-x: auto;
+    padding: 0 1rem 1rem 1rem;
+    gap: 1rem;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.recent-transactions-scroller::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.recent-transactions-scroller .recent-card {
+    flex: 0 0 160px; /* Do not grow, do not shrink, base width 160px */
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border-color);
+    padding: 1rem;
     border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.recent-transactions-scroller .recent-card .status {
+    margin-top: auto; /* Push status to the bottom */
+}
+
+.status {
+    padding: 0.2rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
     font-weight: bold;
+    text-align: center;
+    display: inline-block;
+    width: fit-content;
+}
+
+.status.aceptada {
+    background-color: #e8f5e9; /* Light green */
+    color: #2e7d32;
+}
+
+.status.recibido {
+    background-color: #e3f2fd; /* Light blue */
+    color: #1565c0;
+}
+
+.status.pendiente {
+    background-color: #fffde7; /* Light yellow */
+    color: #f9a825;
+}
+
+.status.rechazada {
+    background-color: #ffebee; /* Light red */
+    color: #c62828;
 }

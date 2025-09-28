@@ -1,0 +1,21 @@
+{
+  "short_name": "Santander",
+  "name": "Santander Web",
+  "description": "Santander banking application replica for easy access.",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/logo.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#EC0000",
+  "background_color": "#f4f4f4"
+}
